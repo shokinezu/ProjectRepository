@@ -3,129 +3,313 @@
  */
 
 import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
- * An object of Class "Contact" will create an Array storing the name, phone number,
- * email address, street address, city, state, zipcode, and any notes that pertain to
- * the Contact being generated at that time.
+ * An object of Class "Contact" will create an Array storing the name, phone number, email address,
+ * street address, city, state, zipcode, and any notes that pertain to the Contact being generated
+ * at that time.
  * 
  * @author Erik
- *
  */
 public class Contact {
+    
+    public Scanner input = new Scanner(System.in);
+    
+    private String[] contactInfo = null;
+    
+    private final String SP = " ";
+    private final String LINE = "\n";
+    private final String TAB = "\t";
+    
+    private String titleHeader = "---------CONTACT LIST APPLICATION---------" + LINE;
+    private String askForChoice = "What would you like to do?" + LINE;
+    private String giveSearchOption = "(Enter SEARCH to search your Contact List)";
+    private String giveCreateOption = "(Enter CREATE to add a new Contact)";
+    private String giveShowAllOption = "(Enter SHOWLIST to display all contacts)";
+    
+    private String contactName;
+    private String contactNumber;
+    private String contactEmail;
+    private String contactAddress;
+    private String contactCity;
+    private String contactState;
+    private String contactZip;
+    private String contactNotes;
+    private String choice;
 
-	private String[] contactInfo;
-	
-	private String contactName, contactNumber, contactEmail, contactAddress,
-	contactCity, contactState, contactZip, contactNotes;
-	
-	public Contact() {
-		String[] contactInformation = getContactInfo();
-	}
-	private String[] getContactInfo() {
-		contactInfo.add();
-		getContactNumber();
-		getContactEmail();
-		getContactAddress();
-		getContactCity();
-		getContactState();
-		getContactZip();
-		getContactNotes();
-		return contactInfo;
-	}
-	/**
-	 * @return the contactName
-	 */
-	public String getContactName() {
-		return this.contactName;
-	}
-	/**
-	 * @param contactName the contactName to set
-	 */
-	public void setContactName(String name) {
-		this.contactName = name;
-	}
-	/**
-	 * @return the contactNumber
-	 */
-	public String getContactNumber() {
-		return this.contactNumber;
-	}
-	/**
-	 * @param contactNumber the contactNumber to set
-	 */
-	public void setContactNumber(String num) {
-		this.contactNumber = num;
-	}
-	/**
-	 * @return the contactEmail
-	 */
-	public String getContactEmail() {
-		return this.contactEmail;
-	}
-	/**
-	 * @param contactEmail the contactEmail to set
-	 */
-	public void setContactEmail(String email) {
-		this.contactEmail = email;
-	}
-	/**
-	 * @return the contactAddress
-	 */
-	public String getContactAddress() {
-		return this.contactAddress;
-	}
-	/**
-	 * @param contactAddress the contactAddress to set
-	 */
-	public void setContactAddress(String street) {
-		this.contactAddress = street;
-	}
-	/**
-	 * @return the contactCity
-	 */
-	public String getContactCity() {
-		return this.contactCity;
-	}
-	/**
-	 * @param contactCity the contactCity to set
-	 */
-	public void setContactCity(String city) {
-		this.contactCity = city;
-	}
-	/**
-	 * @return the contactState
-	 */
-	public String getContactState() {
-		return this.contactState;
-	}
-	/**
-	 * @param contactState the contactState to set
-	 */
-	public void setContactState(String state) {
-		this.contactState = state;
-	}
-	/**
-	 * @return the contactZip
-	 */
-	public String getContactZip() {
-		return this.contactZip;
-	}
-	/**
-	 * @param contactZip the contactZip to set
-	 */
-	public void setContactZip(String zipcode) {
-		this.contactZip = zipcode;
-	}
-	/**
-	 * @return the contactNotes
-	 */
-	public String getContactNotes() {
-		return this.contactNotes;
-	}
-	/**
-	 * @param contactNotes the contactNotes to set
-	 */
-	public void setContactNotes(String notes) {
-		this.contactNotes = notes;
-	}
+    private boolean newContact, searchList, showList;
+    
+    public Contact() {
+
+        System.out.println(titleHeader);
+        System.out.println(askForChoice);
+        System.out.println(giveCreateOption + LINE);
+        System.out.println(giveShowAllOption + LINE);
+        System.out.println(giveSearchOption + LINE);
+        System.out.println("Your Selection: ");
+        this.choice = input.nextLine().toUpperCase();
+        if(isCreateNew()) {
+            
+        }
+    }
+    
+    public Contact(String name) {
+        System.out.println(Arrays.toString(this.contactInfo));
+    }
+    
+    public boolean isCreateNew() {
+        if(this.choice.equalsIgnoreCase("CREATE")) {
+            newContact = true;
+        }
+        return newContact;
+    }
+    
+    public boolean isSearchContacts() {
+        if(this.choice.equalsIgnoreCase("SEARCH")) {
+            searchList = true;
+        }
+        return searchList;
+    }
+    
+    public boolean isPrintContacts() {
+        if(this.choice.equalsIgnoreCase("SHOWLIST")) {
+            showList = true;
+        }
+        return showList;
+    }
+    
+    /**
+     * @return the contactInfo
+     */
+    public String[] getContactInfo() {
+        return contactInfo;
+    }
+    
+    /**
+     * @param contactInfo
+     *            the contactInfo to set
+     */
+    public void setContactInfo(String[] contactInfo) {
+        this.contactInfo = contactInfo;
+    }
+    
+    /**
+     * @return the contactName
+     */
+    public String getContactName() {
+        return contactName;
+    }
+    
+    /**
+     * @param contactName
+     *            the contactName to set
+     */
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+    
+    public void setContactName() {
+        System.out.println("Name:" + TAB);
+        String name = input.nextLine().toUpperCase();
+        if(!(name.length() > 1)) {
+            this.contactName = "[Name]";
+        }
+        this.contactName = name;
+    }
+
+    /**
+     * @return the contactNumber
+     */
+    public String getContactNumber() {
+        return contactNumber;
+    }
+    
+    /**
+     * @param contactNumber
+     *            the contactNumber to set
+     */
+    public void setContactNumber(String contactNumber) {
+        if(contactNumber.length() == 11) {
+            this.contactNumber = "+" + contactNumber.substring(0, 1) + " ("
+                    + contactNumber.substring(1, 4) + ") "
+                    + contactNumber.substring(4, 7) + "-"
+                    + contactNumber.substring(7);
+        }
+        if(contactNumber.length() == 10) {
+            this.contactNumber = "(" + contactNumber.substring(0, 3) + ") "
+                    + contactNumber.substring(3, 6) + "-"
+                    + contactNumber.substring(6);
+        }
+        if(contactNumber.length() == 7) {
+            this.contactNumber = contactNumber.substring(0, 3) + "-"
+                    + contactNumber.substring(3);
+        }
+
+    }
+    
+    public void setContactNumber() {
+        System.out.println("Phone Number:" + TAB);
+        String phone = input.nextLine();
+        if(isValidPhoneNumber(phone)) {
+            this.contactNumber = phone;
+        } else {
+            this.contactNumber = phone;
+        }
+    }
+    
+    /**
+     * @return the contactEmail
+     */
+    public String getContactEmail() {
+        return contactEmail;
+    }
+    
+    /**
+     * @param contactEmail
+     *            the contactEmail to set
+     */
+    public void setContactEmail(String contactEmail) {
+        this.contactEmail = contactEmail;
+    }
+    
+    public void setContactEmail() {
+        System.out.println("Email:" + TAB);
+        String email = input.nextLine().toUpperCase();
+        if(isValidEmail(email)) {
+            this.contactEmail = email;
+        } else {
+            this.contactEmail = "[Email]";
+        }
+
+    }
+
+    /**
+     * @return the contactAddress
+     */
+    public String getContactAddress() {
+        return this.contactAddress;
+    }
+    
+    /**
+     * @param contactAddress
+     *            the contactAddress to set
+     */
+    public void setContactAddress(String contactAddress) {
+        this.contactAddress = contactAddress;
+    }
+    
+    public void setContactAddress() {
+        System.out.println("Name:" + TAB);
+        String address = input.nextLine().toUpperCase();
+        this.contactAddress = address;
+    }
+
+    /**
+     * @return the contactCity
+     */
+    public String getContactCity() {
+        return this.contactCity;
+    }
+    
+    /**
+     * @param contactCity
+     *            the contactCity to set
+     */
+    public void setContactCity(String contactCity) {
+        this.contactCity = contactCity;
+    }
+    
+    public void setContactCity() {
+        System.out.println("City:" + TAB);
+        String city = input.nextLine().toUpperCase();
+        this.contactCity = city;
+    }
+
+    /**
+     * @return the contactState
+     */
+    public String getContactState() {
+        return this.contactState;
+    }
+    
+    /**
+     * @param contactState
+     *            the contactState to set
+     */
+    public void setContactState(String contactState) {
+        this.contactState = contactState;
+    }
+    
+    public void setContactState() {
+        System.out.println("State:" + TAB);
+        String state = input.nextLine().toUpperCase();
+        this.contactState = state;
+    }
+
+    /**
+     * @return the contactZip
+     */
+    public String getContactZip() {
+        return contactZip;
+    }
+    
+    /**
+     * @param contactZip
+     *            the contactZip to set
+     */
+    public void setContactZip(String contactZip) {
+        this.contactZip = contactZip;
+    }
+    
+    public void setContactZip() {
+        System.out.println("Zipcode:" + TAB);
+        String zipcode = input.nextLine().toUpperCase();
+        this.contactZip = zipcode;
+    }
+
+    /**
+     * @return the contactNotes
+     */
+    public String getContactNotes() {
+        return contactNotes;
+    }
+    
+    /**
+     * @param contactNotes
+     *            the contactNotes to set
+     */
+    public void setContactNotes(String contactNotes) {
+        this.contactNotes = contactNotes;
+    }
+    
+    public void setContactNotes() {
+        System.out.println("Notes:" + TAB);
+        String notes = input.nextLine().toUpperCase();
+        this.contactNotes = notes;
+    }
+    
+    public static boolean isValidEmail(String email) {
+        if(email != null) {
+            Pattern p = Pattern.compile("^[A-Za-z].*?@^[A-Za-z]\\.com$");
+            Matcher m = p.matcher(email);
+            return m.find();
+        }
+        return false;
+    }
+    
+    private static boolean isValidPhoneNumber(String phoneNo) {
+        if(phoneNo.matches("\\d{10}"))
+            return true;
+        else if(phoneNo.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"))
+            return true;
+        else if(phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}"))
+            return true;
+        else if(phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"))
+            return true;
+        else
+            return false;
+    }
 }
