@@ -121,24 +121,25 @@ public class Contact {
      *            the contactNumber to set
      */
     public void setContactNumber() {
+        String phone, phoneFormat = null;
         System.out.println("Phone Number:" + TAB);
-        String phone = input.nextLine();
+        phone = input.nextLine();
         
         if(phone.length() == 11) {
-            this.contactNumber = "+" + phone.substring(0, 1) + " ("
+            phoneFormat = "+" + phone.substring(0, 1) + " ("
                     + phone.substring(1, 4) + ") " + phone.substring(4, 7) + "-"
                     + phone.substring(7);
         }
         if(phone.length() == 10) {
-            this.contactNumber = "(" + phone.substring(0, 3) + ") "
+            phoneFormat = "(" + phone.substring(0, 3) + ") "
                     + phone.substring(3, 6) + "-" + phone.substring(6);
         }
         if(phone.length() == 7) {
-            this.contactNumber = phone.substring(0, 3) + "-" + phone.substring(3);
+            phoneFormat = phone.substring(0, 3) + "-" + phone.substring(3);
         }
 
         if(isValidPhoneNumber(phone)) {
-            this.contactNumber = phone;
+            this.contactNumber = phoneFormat;
         } else {
             this.contactNumber = "[Phone Number]";
         }
