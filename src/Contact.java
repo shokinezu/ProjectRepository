@@ -4,8 +4,6 @@
 
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * An object of Class "Contact" will create an Array storing the name, phone number, email address,
@@ -20,9 +18,9 @@ public class Contact {
     
     private String[] contactInfo = null;
     
-    private final String SP = " ";
-    private final String LINE = "\n";
-    private final String TAB = "\t";
+    public final String SP = " ";
+    public final String LINE = "\n";
+    public final String TAB = "\t";
     
     private String titleHeader = "---------CONTACT LIST APPLICATION---------" + LINE;
     private String askForChoice = "What would you like to do?" + LINE;
@@ -52,7 +50,12 @@ public class Contact {
         System.out.println("Your Selection: ");
         this.choice = input.nextLine().toUpperCase();
         if(isCreateNew()) {
-            
+            setContactName();
+            setContactName(getContactName());
+            setContactNumber();
+            setContactNumber(getContactNumber());
+            setContactEmail();
+            setContactEmail(getContactEmail());
         }
     }
     
@@ -79,21 +82,6 @@ public class Contact {
             showList = true;
         }
         return showList;
-    }
-    
-    /**
-     * @return the contactInfo
-     */
-    public String[] getContactInfo() {
-        return contactInfo;
-    }
-    
-    /**
-     * @param contactInfo
-     *            the contactInfo to set
-     */
-    public void setContactInfo(String[] contactInfo) {
-        this.contactInfo = contactInfo;
     }
     
     /**
@@ -156,7 +144,7 @@ public class Contact {
         if(isValidPhoneNumber(phone)) {
             this.contactNumber = phone;
         } else {
-            this.contactNumber = phone;
+            this.contactNumber = "[Phone Number]";
         }
     }
     
@@ -164,7 +152,7 @@ public class Contact {
      * @return the contactEmail
      */
     public String getContactEmail() {
-        return contactEmail;
+        return this.contactEmail;
     }
     
     /**
@@ -178,12 +166,11 @@ public class Contact {
     public void setContactEmail() {
         System.out.println("Email:" + TAB);
         String email = input.nextLine().toUpperCase();
-        if(isValidEmail(email)) {
+        if(isValidEmailAddress(email)) {
             this.contactEmail = email;
         } else {
             this.contactEmail = "[Email]";
         }
-
     }
 
     /**
@@ -291,13 +278,10 @@ public class Contact {
         this.contactNotes = notes;
     }
     
-    public static boolean isValidEmail(String email) {
-        if(email != null) {
-            Pattern p = Pattern.compile("^[A-Za-z].*?@^[A-Za-z]\\.com$");
-            Matcher m = p.matcher(email);
-            return m.find();
-        }
-        return false;
+    public static final String EMAIL = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+    
+    protected boolean isValidEmailAddress(String email) {
+        return email.matches(EMAIL);
     }
     
     private static boolean isValidPhoneNumber(String phoneNo) {
@@ -308,6 +292,8 @@ public class Contact {
         else if(phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}"))
             return true;
         else if(phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"))
+            return true;
+        else if(phoneNo.matches("\\d{11}"))
             return true;
         else
             return false;
