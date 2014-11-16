@@ -51,11 +51,20 @@ public class Contact {
         this.choice = input.nextLine().toUpperCase();
         if(isCreateNew()) {
             setContactName();
-            setContactName(getContactName());
             setContactNumber();
-            setContactNumber(getContactNumber());
             setContactEmail();
-            setContactEmail(getContactEmail());
+            setContactAddress();
+            setContactCity();
+            setContactState();
+            setContactZip();
+            setContactNotes();
+        }
+        
+        if(isSearchContacts()) {
+            
+        }
+        if(isPrintContacts()) {
+            System.out.println(Arrays.toString(this.contactInfo));
         }
     }
     
@@ -91,14 +100,6 @@ public class Contact {
         return contactName;
     }
     
-    /**
-     * @param contactName
-     *            the contactName to set
-     */
-    public void setContactName(String contactName) {
-        this.contactName = contactName;
-    }
-    
     public void setContactName() {
         System.out.println("Name:" + TAB);
         String name = input.nextLine().toUpperCase();
@@ -119,33 +120,29 @@ public class Contact {
      * @param contactNumber
      *            the contactNumber to set
      */
-    public void setContactNumber(String contactNumber) {
-        if(contactNumber.length() == 11) {
-            this.contactNumber = "+" + contactNumber.substring(0, 1) + " ("
-                    + contactNumber.substring(1, 4) + ") "
-                    + contactNumber.substring(4, 7) + "-"
-                    + contactNumber.substring(7);
-        }
-        if(contactNumber.length() == 10) {
-            this.contactNumber = "(" + contactNumber.substring(0, 3) + ") "
-                    + contactNumber.substring(3, 6) + "-"
-                    + contactNumber.substring(6);
-        }
-        if(contactNumber.length() == 7) {
-            this.contactNumber = contactNumber.substring(0, 3) + "-"
-                    + contactNumber.substring(3);
-        }
-
-    }
-    
     public void setContactNumber() {
         System.out.println("Phone Number:" + TAB);
         String phone = input.nextLine();
+        
+        if(phone.length() == 11) {
+            this.contactNumber = "+" + phone.substring(0, 1) + " ("
+                    + phone.substring(1, 4) + ") " + phone.substring(4, 7) + "-"
+                    + phone.substring(7);
+        }
+        if(phone.length() == 10) {
+            this.contactNumber = "(" + phone.substring(0, 3) + ") "
+                    + phone.substring(3, 6) + "-" + phone.substring(6);
+        }
+        if(phone.length() == 7) {
+            this.contactNumber = phone.substring(0, 3) + "-" + phone.substring(3);
+        }
+
         if(isValidPhoneNumber(phone)) {
             this.contactNumber = phone;
         } else {
             this.contactNumber = "[Phone Number]";
         }
+
     }
     
     /**
@@ -155,13 +152,6 @@ public class Contact {
         return this.contactEmail;
     }
     
-    /**
-     * @param contactEmail
-     *            the contactEmail to set
-     */
-    public void setContactEmail(String contactEmail) {
-        this.contactEmail = contactEmail;
-    }
     
     public void setContactEmail() {
         System.out.println("Email:" + TAB);
@@ -179,17 +169,9 @@ public class Contact {
     public String getContactAddress() {
         return this.contactAddress;
     }
-    
-    /**
-     * @param contactAddress
-     *            the contactAddress to set
-     */
-    public void setContactAddress(String contactAddress) {
-        this.contactAddress = contactAddress;
-    }
-    
+
     public void setContactAddress() {
-        System.out.println("Name:" + TAB);
+        System.out.println("Address:" + TAB);
         String address = input.nextLine().toUpperCase();
         this.contactAddress = address;
     }
@@ -199,14 +181,6 @@ public class Contact {
      */
     public String getContactCity() {
         return this.contactCity;
-    }
-    
-    /**
-     * @param contactCity
-     *            the contactCity to set
-     */
-    public void setContactCity(String contactCity) {
-        this.contactCity = contactCity;
     }
     
     public void setContactCity() {
@@ -222,14 +196,6 @@ public class Contact {
         return this.contactState;
     }
     
-    /**
-     * @param contactState
-     *            the contactState to set
-     */
-    public void setContactState(String contactState) {
-        this.contactState = contactState;
-    }
-    
     public void setContactState() {
         System.out.println("State:" + TAB);
         String state = input.nextLine().toUpperCase();
@@ -241,14 +207,6 @@ public class Contact {
      */
     public String getContactZip() {
         return contactZip;
-    }
-    
-    /**
-     * @param contactZip
-     *            the contactZip to set
-     */
-    public void setContactZip(String contactZip) {
-        this.contactZip = contactZip;
     }
     
     public void setContactZip() {
@@ -264,14 +222,6 @@ public class Contact {
         return contactNotes;
     }
     
-    /**
-     * @param contactNotes
-     *            the contactNotes to set
-     */
-    public void setContactNotes(String contactNotes) {
-        this.contactNotes = contactNotes;
-    }
-    
     public void setContactNotes() {
         System.out.println("Notes:" + TAB);
         String notes = input.nextLine().toUpperCase();
@@ -285,17 +235,22 @@ public class Contact {
     }
     
     private static boolean isValidPhoneNumber(String phoneNo) {
-        if(phoneNo.matches("\\d{10}"))
+        if(phoneNo.matches("\\d{10}")) {
             return true;
-        else if(phoneNo.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}"))
+        } else if(phoneNo.matches("\\d{3}[-\\.\\s]\\d{3}[-\\.\\s]\\d{4}")) {
             return true;
-        else if(phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}"))
+        } else if(phoneNo.matches("\\d{3}-\\d{3}-\\d{4}\\s(x|(ext))\\d{3,5}")) {
             return true;
-        else if(phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}"))
+        } else if(phoneNo.matches("\\(\\d{3}\\)-\\d{3}-\\d{4}")) {
             return true;
-        else if(phoneNo.matches("\\d{11}"))
+        } else if(phoneNo.matches("\\d{11}")) {
             return true;
-        else
+        } else if(phoneNo.matches("\\d{7}")) {
+            return true;
+        } else if(phoneNo.matches("\\d{10}")) {
+            return true;
+        } else {
             return false;
+        }
     }
 }
