@@ -27,8 +27,10 @@ public class Contact {
     private String lastName;
     private String phoneDigits;
     private String emailHandle;
-    private String addressLine_1;
-    private String addressLine_2;
+    private String streetAddress;
+    private String cityName;
+    private String stateName;
+    private String zipDigits;
     private String personalNotes;
     private boolean noLast = true;
     
@@ -39,13 +41,16 @@ public class Contact {
         this.lastName = "[Last Name]"; // Required so change.
         this.phoneDigits = "[Phone Number]";
         this.emailHandle = "[Email Address]";
-        this.addressLine_1 = "[House Number] [Street Name]";
-        this.addressLine_2 = "[City] , [State] [Zipcode]";
+        this.streetAddress = "[House Number] [Street Name]";
+        this.cityName = "[City]";
+        this.stateName = "[State]";
+        this.zipDigits = "[Zipcode]";
         this.personalNotes = "[Contact Notes]";
         
-        System.out.println("Welcome to the Contact List Application");
-        System.out.println("To Enter a New Contact, enter the following:");
-        System.out.println("First Name :");
+        System.out.println(TAB + TAB + "Welcome to the Contact List Application");
+        System.out.println(LINE + TAB
+                + "To Enter a New Contact, enter the following:");
+        System.out.println(LINE + "First Name :");
         String givenName = console.nextLine().toUpperCase();
         if(!givenName.isEmpty()) {
             this.firstName = givenName;
@@ -76,16 +81,33 @@ public class Contact {
             String houseAndStreet = console.nextLine().toUpperCase();
 
             if(!houseAndStreet.isEmpty()) {
-                this.addressLine_1 = houseAndStreet;
+                this.streetAddress = houseAndStreet;
             }
-
-            System.out.println("City, State, Zipcode: ");
-            System.out.println("(e.g. Los Altos Hills, CA 94022)");
-            String cityStateZip = console.nextLine().trim().toUpperCase();
-
-            if(!cityStateZip.isEmpty()) {
-                this.addressLine_2 = cityStateZip;
+            
+            System.out.println("City: ");
+            String contactCity = console.nextLine().toUpperCase();
+            if(!contactCity.isEmpty()) {
+                this.cityName = contactCity;
             }
+            
+            System.out.println("State: ");
+            String contactState = console.nextLine().toUpperCase();
+            if(!contactState.isEmpty()) {
+                this.stateName = contactState;
+            }
+            
+            System.out.println("Zipcode: ");
+            String contactZip = console.nextLine();
+            if(!contactZip.isEmpty()) {
+                this.zipDigits = contactZip;
+            }
+            // System.out.println("City, State, Zipcode: ");
+            // System.out.println("(e.g. Los Altos Hills, CA 94022)");
+            // String cityStateZip = console.nextLine().trim().toUpperCase();
+            //
+            // if(!cityStateZip.isEmpty()) {
+            // this.addressLine_2 = cityStateZip;
+            // }
 
             System.out.println("Contact Notes:");
             String notes = console.nextLine().toUpperCase();
@@ -93,6 +115,7 @@ public class Contact {
             if(!notes.isEmpty()) {
                 this.personalNotes = notes;
             }
+
         }
 
     }
@@ -109,14 +132,16 @@ public class Contact {
      */
     @Override
     public String toString() {
+
         return String.format(LINE + LINE + TAB + "Contact: %s %s" + LINE + TAB
                 + "------------------------------" + LINE + LINE + TAB
                 + "Phone Number:" + LINE + TAB + "%s" + LINE + LINE + TAB
                 + "Email Address:" + LINE + TAB + "%s" + LINE + LINE + TAB
-                + "Address: " + LINE + TAB + "%s" + LINE + TAB + "%s" + LINE + LINE
-                + TAB + "Contact Notes: " + LINE + TAB + "%s", this.firstName,
-                this.lastName, this.phoneDigits, this.emailHandle,
-                this.addressLine_1, this.addressLine_2, this.personalNotes);
+                + "Address: " + LINE + TAB + "%s" + LINE + TAB + "%s, %s %s" + LINE
+                + LINE + TAB + "Contact Notes: " + LINE + TAB + "%s",
+                this.firstName, this.lastName, this.phoneDigits, this.emailHandle,
+                this.streetAddress, this.cityName, this.stateName, this.zipDigits,
+                this.personalNotes);
     }
 
     /**
@@ -171,35 +196,65 @@ public class Contact {
     public void setEmailHandle(String emailHandle) {
         this.emailHandle = emailHandle;
     }
-
+    
     /**
-     * @return the addressLine_1
+     * @return the streetAddress
      */
-    public String getAddressLine_1() {
-        return this.addressLine_1;
+    public String getStreetAddress() {
+        return this.streetAddress;
+    }
+    
+    /**
+     * @param streetAddress
+     *            the streetAddress to set
+     */
+    public void setStreetAddress(String streetAddress) {
+        this.streetAddress = streetAddress;
+    }
+    
+    /**
+     * @return the cityName
+     */
+    public String getCityName() {
+        return this.cityName;
+    }
+    
+    /**
+     * @param cityName
+     *            the cityName to set
+     */
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
     }
 
     /**
-     * @param addressLine_1
-     *            the addressLine_1 to set
+     * @return the stateName
      */
-    public void setAddressLine_1(String addressLine_1) {
-        this.addressLine_1 = addressLine_1;
+    public String getStateName() {
+        return this.stateName;
     }
 
     /**
-     * @return the addressLine_2
+     * @param stateName
+     *            the stateName to set
      */
-    public String getAddressLine_2() {
-        return this.addressLine_2;
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
     }
 
     /**
-     * @param addressLine_2
-     *            the addressLine_2 to set
+     * @return the zipDigits
      */
-    public void setAddressLine_2(String addressLine_2) {
-        this.addressLine_2 = addressLine_2;
+    public String getZipDigits() {
+        return this.zipDigits;
+    }
+
+    /**
+     * @param zipDigits
+     *            the zipDigits to set
+     */
+    public void setZipDigits(String zipDigits) {
+        this.zipDigits = zipDigits;
     }
 
     /**
